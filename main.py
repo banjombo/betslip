@@ -7,7 +7,7 @@ from pydantic import BaseModel
 import httpx
 
 # ---------- Config ----------
-ODDS_API_KEY = os.getenv(aca55576de0ed9e844c4fad2d2d765d2)
+ODDS_API_KEY = os.getenv("ODDS_API_KEY")
 if not ODDS_API_KEY:
     # Don’t crash in local dev where you might stub; raise in hosted envs
     print("WARNING: ODDS_API_KEY not set. Live odds routes will fail.")
