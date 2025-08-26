@@ -59,6 +59,16 @@ class GamesResponse(BaseModel):
     as_of: str
     games: List[Game]
 
+class Game(BaseModel):
+    week: int
+    kickoff_iso: str
+    home: str
+    away: str
+    moneyline: Moneyline
+    spread: Spread
+    total: Total
+    book: Optional[str] = None
+
 # ---------- Helpers ----------
 def football_week_window(now: datetime) -> Tuple[datetime, datetime]:
     """Thu 00:00 → Tue 00:00 window containing 'now' (captures TNF, Sunday, MNF)."""
@@ -137,6 +147,17 @@ def map_event_to_game(ev: dict, book: dict) -> Optional[Game]:
 
     return Game(week=week_guess, kickoff_iso=ko_iso, home=home, away=away,
                 moneyline=moneyline, spread=spread, total=total)
+    
+    return Game(
+    week=week_guess,
+    kickoff_iso=ko_iso,
+    home=home,
+    away=away,
+    moneyline=moneyline,
+    spread=spread,
+    total=total,
+    book=book.get("title") if book else None   # 👈 add this
+)
 
 def within_window(commence_iso: str, start: datetime, end: datetime) -> bool:
     iso = commence_iso.replace("Z", "+00:00")
